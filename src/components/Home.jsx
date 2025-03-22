@@ -1,6 +1,42 @@
 import { Link } from 'react-router-dom';
 import { ArrowRightIcon, ComputerDesktopIcon, CpuChipIcon, WrenchScrewdriverIcon, SparklesIcon, ShieldCheckIcon, TruckIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 
+const featuredCategories = [
+  {
+    name: 'Custom Gaming PCs',
+    description: 'High-performance custom builds for ultimate gaming experience',
+    imageSrc: '/images/gaming-pc.jpg',
+    imageAlt: 'Gaming PC setup with RGB lighting',
+    href: '/custom-pc',
+  },
+  {
+    name: 'PC Components',
+    description: 'Premium parts for your custom build',
+    imageSrc: '/images/parts/gpu/4090.jpg',
+    imageAlt: 'High-end graphics card',
+    href: '/parts',
+  },
+];
+
+const features = [
+  {
+    name: 'Expert Build Service',
+    description: 'Professional assembly by certified technicians',
+  },
+  {
+    name: 'Quality Components',
+    description: 'Only the best parts from trusted manufacturers',
+  },
+  {
+    name: 'Extended Warranty',
+    description: '3-year warranty on all custom builds',
+  },
+  {
+    name: '24/7 Support',
+    description: 'Technical support whenever you need it',
+  },
+];
+
 export default function Home() {
   const categories = [
     {
@@ -26,61 +62,84 @@ export default function Home() {
     },
   ];
 
-  const features = [
-    {
-      name: 'Expert Support',
-      description: 'Our team of experts is here to help you build the perfect PC',
-      icon: ChatBubbleLeftRightIcon,
-    },
-    {
-      name: 'Quality Parts',
-      description: 'We only use high-quality components from trusted manufacturers',
-      icon: ShieldCheckIcon,
-    },
-    {
-      name: 'Fast Shipping',
-      description: 'Quick delivery and secure packaging for all orders',
-      icon: TruckIcon,
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-            <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-              <div className="sm:text-center lg:text-left">
-                <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl opacity-0 translate-y-4 animate-fade-in-up">
-                  <span className="block">Build Your Dream</span>
-                  <span className="block text-primary-600">Gaming PC</span>
-                </h1>
-                <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 opacity-0 translate-y-4 animate-fade-in-up animation-delay-200">
-                  Choose from our selection of prebuilt PCs, components, or create your custom build. We offer the best gaming and workstation solutions.
-                </p>
-                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start opacity-0 translate-y-4 animate-fade-in-up animation-delay-400">
-                  <div className="rounded-md shadow">
-                    <Link
-                      to="/prebuilt"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transform hover:scale-105 transition-all duration-300"
-                    >
-                      Browse Prebuilt PCs
-                      <ArrowRightIcon className="ml-2 h-5 w-5" />
-                    </Link>
-                  </div>
-                  <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <Link
-                      to="/custom-build"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200 transform hover:scale-105 transition-all duration-300"
-                    >
-                      Custom Build
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </main>
+    <div className="bg-white">
+      {/* Hero section */}
+      <div className="relative">
+        <div className="absolute inset-0">
+          <img
+            className="h-full w-full object-cover"
+            src="/images/hero-bg.jpg"
+            alt="Gaming setup"
+          />
+          <div className="absolute inset-0 bg-gray-900 opacity-50" />
+        </div>
+        <div className="relative mx-auto max-w-7xl py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Build Your Dream PC
+          </h1>
+          <p className="mt-6 max-w-3xl text-xl text-gray-300">
+            Custom-built computers tailored to your needs. Whether you're a gamer,
+            content creator, or professional, we have the perfect solution for you.
+          </p>
+          <div className="mt-10">
+            <Link
+              to="/custom-pc"
+              className="inline-block rounded-md border border-transparent bg-blue-600 px-8 py-3 text-center font-medium text-white hover:bg-blue-700"
+            >
+              Shop Custom PCs
+            </Link>
           </div>
+        </div>
+      </div>
+
+      {/* Featured categories */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
+          <h2 className="text-2xl font-bold text-gray-900">Featured Categories</h2>
+
+          <div className="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0">
+            {featuredCategories.map((category) => (
+              <div key={category.name} className="group relative">
+                <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
+                  <img
+                    src={category.imageSrc}
+                    alt={category.imageAlt}
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+                <h3 className="mt-6 text-sm text-gray-500">
+                  <Link to={category.href}>
+                    <span className="absolute inset-0" />
+                    {category.name}
+                  </Link>
+                </h3>
+                <p className="text-base font-semibold text-gray-900">{category.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Features */}
+      <div className="bg-gray-50">
+        <div className="mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:py-24 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900">Why Choose Us</h2>
+            <p className="mt-4 text-lg text-gray-500">
+              We provide the best custom PC building experience with premium components and expert service.
+            </p>
+          </div>
+          <dl className="mt-12 space-y-10 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+            {features.map((feature) => (
+              <div key={feature.name} className="relative">
+                <dt>
+                  <p className="ml-9 text-lg font-medium leading-6 text-gray-900">{feature.name}</p>
+                </dt>
+                <dd className="mt-2 ml-9 text-base text-gray-500">{feature.description}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
 
@@ -125,34 +184,6 @@ export default function Home() {
                     <p className="mt-2 text-gray-500">{category.description}</p>
                   </div>
                 </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center opacity-0 translate-y-4 animate-fade-in-up">
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              Why Choose Us
-            </h2>
-            <p className="mt-4 text-lg text-gray-500">
-              We provide the best gaming and workstation solutions
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, index) => (
-              <div
-                key={feature.name}
-                className={`bg-white p-6 rounded-lg shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 opacity-0 translate-y-4 animate-fade-in-up`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <feature.icon className="h-12 w-12 text-primary-600 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900">{feature.name}</h3>
-                <p className="mt-2 text-gray-500">{feature.description}</p>
               </div>
             ))}
           </div>
