@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { useFilters } from '../context/FilterContext';
 import PriceSlider from './PriceSlider';
 
@@ -59,9 +59,63 @@ export default function FilterSidebar({ isOpen, setIsOpen }) {
     </div>
   );
 
+  const FilterContent = () => (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+        <button
+          onClick={resetFilters}
+          className="text-sm text-primary-600 hover:text-primary-700"
+        >
+          Reset all
+        </button>
+      </div>
+
+      <FilterSection title="Price Range">
+        <PriceSlider />
+      </FilterSection>
+
+      {Object.entries(specs).map(([category, options]) => (
+        <FilterSection key={category} title={category.toUpperCase()}>
+          <div className="space-y-2">
+            {options.map((option) => (
+              <label key={option} className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={state.selectedSpecs[category].includes(option)}
+                  onChange={() => toggleSpec(category, option)}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
+                <span className="ml-2 text-sm text-gray-700">{option}</span>
+              </label>
+            ))}
+          </div>
+        </FilterSection>
+      ))}
+
+      <FilterSection title="Compatibility">
+        <div className="flex flex-wrap gap-2">
+          {compatibilityTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => toggleCompatibility(tag)}
+              className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                state.compatibility.includes(tag)
+                  ? 'bg-primary-100 text-primary-800'
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </FilterSection>
+    </div>
+  );
+
   return (
     <>
-      {/* Mobile Filter Dialog */}
+      {/* Mobile filter dialog */}
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setIsOpen}>
           <Transition.Child
@@ -73,7 +127,7 @@ export default function FilterSidebar({ isOpen, setIsOpen }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75" />
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-40 flex">
@@ -86,20 +140,20 @@ export default function FilterSidebar({ isOpen, setIsOpen }) {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl">
-                <div className="flex items-center justify-between px-4">
-                  <Dialog.Title className="text-lg font-medium text-gray-900">
-                    Filters
-                  </Dialog.Title>
+              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+                <div className="flex items-center justify-between px-4 py-4">
+                  <h2 className="text-lg font-medium text-gray-900">Filters</h2>
                   <button
                     type="button"
-                    className="text-gray-400 hover:text-gray-500"
+                    className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
                     onClick={() => setIsOpen(false)}
                   >
-                    <XMarkIcon className="h-6 w-6" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="mt-4">
+
+                {/* Filters */}
+                <div className="px-4">
                   <FilterContent />
                 </div>
               </Dialog.Panel>
@@ -108,68 +162,19 @@ export default function FilterSidebar({ isOpen, setIsOpen }) {
         </Dialog>
       </Transition.Root>
 
-      {/* Desktop Filter Sidebar */}
-      <div className="hidden lg:block lg:w-64 lg:flex-shrink-0 lg:border-r lg:border-gray-200 lg:pt-5 lg:pb-4">
-        <div className="px-4">
-          <FilterContent />
-        </div>
+      {/* Desktop filter sidebar */}
+      <div className="hidden lg:block">
+        <FilterContent />
       </div>
+
+      {/* Mobile filter button */}
+      <button
+        type="button"
+        className="fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary-600 text-white shadow-lg lg:hidden"
+        onClick={() => setIsOpen(true)}
+      >
+        <FunnelIcon className="h-6 w-6" aria-hidden="true" />
+      </button>
     </>
   );
-
-  function FilterContent() {
-    return (
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-medium text-gray-900">Filters</h2>
-          <button
-            onClick={resetFilters}
-            className="text-sm text-primary-600 hover:text-primary-700"
-          >
-            Reset all
-          </button>
-        </div>
-
-        <FilterSection title="Price Range">
-          <PriceSlider />
-        </FilterSection>
-
-        {Object.entries(specs).map(([category, options]) => (
-          <FilterSection key={category} title={category.toUpperCase()}>
-            <div className="space-y-2">
-              {options.map((option) => (
-                <label key={option} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={state.selectedSpecs[category].includes(option)}
-                    onChange={() => toggleSpec(category, option)}
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">{option}</span>
-                </label>
-              ))}
-            </div>
-          </FilterSection>
-        ))}
-
-        <FilterSection title="Compatibility">
-          <div className="flex flex-wrap gap-2">
-            {compatibilityTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => toggleCompatibility(tag)}
-                className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                  state.compatibility.includes(tag)
-                    ? 'bg-primary-100 text-primary-800'
-                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        </FilterSection>
-      </div>
-    );
-  }
 } 
